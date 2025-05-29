@@ -1,0 +1,68 @@
+■注意
+以下、見出しの後ろに★が付いている箇所は、VSCode上でエラーが出ないように、サンプルコードの一部をコメントアウトしています。実行時には該当のリスト番号を参照の上、コンパイル＆実行してお試しください。
+
+■共通
+$Env:Path += ";C:\jdk-21\bin"
+
+■Column
+○コマンドラインからコンパイル／実行する
+cd C:\data\selfjava\src
+javac --enable-preview -source 21 --module-path . to/msn/wings/selfjava/chap01/Hello.java module-info.java
+
+java --enable-preview --module-path . --module selfjava/to.msn.wings.selfjava.chap01.Hello
+
+○javadocコマンド
+cd C:\data\selfjava
+javadoc --source-path src -d doc -subpackages to.msn.wings
+
+
+■chap01
+○簡単化されたmainメソッド	★［リスト 1.5］
+cd C:\data\selfjava\src
+javac --enable-preview -source 21 -cp . HelloSimple.java
+
+java --enable-preview -cp . HelloSimple
+
+○コンパイル＆実行を同時に
+java --enable-preview --source 21 -cp . HelloSimple.java
+
+-----
+
+■chap04
+cd C:\data\selfjava\bin
+java --enable-preview --module-path . --module selfjava/to.msn.wings.selfjava.chap04.CommandArgs 太郎 次郎 三郎
+
+■chap05
+○文字列テンプレート	★［リスト 5.18］
+cd C:\data\selfjava\src
+javac --enable-preview -source 21 --module-path . to/msn/wings/selfjava/chap05/StrTemplate.java module-info.java
+
+java --enable-preview --module-path . --module selfjava/to.msn.wings.selfjava.chap05.StrTemplate
+
+○FMTプロセッサー	★［リスト 5.19］
+javac --enable-preview -source 21 --module-path . to/msn/wings/selfjava/chap05/FmtTemplate.java module-info.java
+
+java --enable-preview --module-path . --module selfjava/to.msn.wings.selfjava.chap05.FmtTemplate
+
+
+■chap11
+○モジュール（基本）	★［リスト 11.36］
+cd C:\data\selfjava\src
+javac --enable-preview -source 21 --module-path ".;../lib" to/msn/wings/selfjava/chap11/ModuleClient.java module-info.java
+
+java --enable-preview --module-path ".;../lib" --module selfjava/to.msn.wings.selfjava.chap11.ModuleClient
+
+○モジュール（ディープリフレクション）	★［リスト 11.38］
+javac --enable-preview -source 21 --module-path ".;../lib" to/msn/wings/selfjava/chap11/ModuleClient2.java module-info.java
+
+java --enable-preview --module-path ".;../lib" --module selfjava/to.msn.wings.selfjava.chap11.ModuleClient2
+
+○Gson	★［リスト 11.41］
+cd C:\data\selfjava\src
+javac --module-path ".;../lib" to/msn/wings/selfjava/chap11/NoModuleLib.java to/msn/wings/selfjava/chap11/Article.java module-info.java
+
+△--add-opensオプションなし
+java --module-path ".;../lib" --add-modules=java.sql --module selfjava/to.msn.wings.selfjava.chap11.NoModuleLib
+
+△--add-opensオプションあり
+java --module-path ".;../lib" --add-modules=java.sql --add-opens=selfjava/to.msn.wings.selfjava.chap11=gson --module selfjava/to.msn.wings.selfjava.chap11.NoModuleLib
