@@ -8,3 +8,5 @@ public class Hello {
         System.out.println(time);
     }
 }
+
+/*System.out.println("コメントアウト") */
