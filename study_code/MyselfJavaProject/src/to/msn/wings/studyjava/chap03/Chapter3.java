@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 public class Chapter3 {
     public static void main(String[] args) {
-        condition();
+        shortCut();
     }
 
     public static void nonumber() {
@@ -16,7 +16,7 @@ public class Chapter3 {
         System.out.println("1" + "2");
         System.out.println("a" + LocalDateTime.now());
         // エラー System.out.println(1 + LocalDateTime.now());
-        final int[] VALUES = { 10, 20, 30 };
+        final int[] VALUES = {10, 20, 30};
         // エラー VALUES = new int[]{12,25,35};
         VALUES[0] = 100;
     }
@@ -120,36 +120,28 @@ public class Chapter3 {
     }
 
     public static void compareArray() {
-        var data1 = new String[] { "あ", "い", "う" };
-        var data2 = new String[] { "あ", "い", "う" };
+        var data1 = new String[] {"あ", "い", "う"};
+        var data2 = new String[] {"あ", "い", "う"};
         System.out.println(data1 == data2);// false
         System.out.println(data1.equals(data2));// false
         System.out.println(Arrays.equals(data1, data2));
     }
 
     public static void compareArrayDeep() {
-        var data1 = new int[][] {
-                { 1, 2, 3 },
-                { 4, 5, 6 },
-                { 7, 8, 9 }
-        };
+        var data1 = new int[][] {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
 
-        var data2 = new int[][] {
-                { 1, 2, 3 },
-                { 4, 5, 6 },
-                { 7, 8, 9 }
-        };
+        var data2 = new int[][] {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
 
         System.out.println(Arrays.equals(data1, data2));
         System.out.println(Arrays.deepEquals(data1, data2));
     }
 
     public static void compareArrayMethod() {
-        var data1 = new int[] { 1, 3 };
-        var data2 = new int[] { 1, 2, 3 };
-        var data3 = new int[] { 1, 2, 3 };
-        var data4 = new int[] { 1, 3, 1 };
-        var data5 = new int[] { 1, 2, 3, 4 };
+        var data1 = new int[] {1, 3};
+        var data2 = new int[] {1, 2, 3};
+        var data3 = new int[] {1, 2, 3};
+        var data4 = new int[] {1, 3, 1};
+        var data5 = new int[] {1, 2, 3, 4};
         System.out.println(Arrays.compare(data1, data2));
         System.out.println(Arrays.compare(data2, data3));
         System.out.println(Arrays.compare(data3, data4));
@@ -169,5 +161,12 @@ public class Chapter3 {
     public static void condition() {
         var age = 30;
         System.out.println(age > 20 ? "大人です" : "子供です");
+    }
+
+    public static void shortCut() {
+        String str = "https://";
+        if (str != null && str.startsWith("https://")) {
+            System.out.println("「http://~」で始まります");
+        }
     }
 }
