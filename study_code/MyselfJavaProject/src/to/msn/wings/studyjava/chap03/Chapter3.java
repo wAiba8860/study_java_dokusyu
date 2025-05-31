@@ -168,5 +168,6 @@ public class Chapter3 {
         if (str != null && str.startsWith("https://")) {
             System.out.println("「http://~」で始まります");
         }
+        System.out.println(~10);
     }
 }
