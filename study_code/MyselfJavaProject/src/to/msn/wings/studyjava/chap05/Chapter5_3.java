@@ -4,11 +4,11 @@ import java.util.regex.Pattern;
 
 public class Chapter5_3 {
     public static void main(String[] args) {
-        regRead();
+        regSplit();
     }
 
     public static void regMatches() {
-        var tel = new String[] { "080-0000-0000", "084-000-0000", "184-0000" };
+        var tel = new String[] {"080-0000-0000", "084-000-0000", "184-0000"};
         var rx = "\\d{2,4}-\\d{2,4}-\\d{4}";
 
         for (var t : tel) {
@@ -34,7 +34,8 @@ public class Chapter5_3 {
 
     public static void regIgnore() {
         var str = "仕事用はwings@example.comです。プライベート用はYAMA@example.comです。検証用.....@aaaaa";
-        var ptn = Pattern.compile("[a-z0-9.!#$%&'*+/=?^_{|}~-]+@[a-z0-9-]+(\\.[a-z0-9-]+)*", Pattern.CASE_INSENSITIVE);
+        var ptn = Pattern.compile("[a-z0-9.!#$%&'*+/=?^_{|}~-]+@[a-z0-9-]+(\\.[a-z0-9-]+)*",
+                Pattern.CASE_INSENSITIVE);
         var match = ptn.matcher(str);
 
         while (match.find()) {
@@ -77,7 +78,8 @@ public class Chapter5_3 {
     }
 
     public static void regLongest() {
-        var tags = "<p><strong>WINGS</strong>サイト<a href = 'index.html'><img src='wings.jpg'/></a></p>";
+        var tags =
+                "<p><strong>WINGS</strong>サイト<a href = 'index.html'><img src='wings.jpg'/></a></p>";
         var ptn = Pattern.compile("<.+?>");
         var match = ptn.matcher(tags);
         while (match.find()) {
@@ -102,7 +104,8 @@ public class Chapter5_3 {
     }
 
     public static void regAfter() {
-        var str = "<p>サポートサイト<a href = \"https://www.wings.msn.to/\">https://www.wings.msn.to/</a></p>";
+        var str =
+                "<p>サポートサイト<a href = \"https://www.wings.msn.to/\">https://www.wings.msn.to/</a></p>";
         // var ptn = Pattern.compile("<a href = \"(.+?)\">\\1</a>");
         // 名前付き
         var ptn = Pattern.compile("<a href = \"(?<link>.+?)\">\\k<link></a>");
@@ -152,5 +155,39 @@ public class Chapter5_3 {
         match(re3, msg2);
         match(re4, msg1);
         match(re4, msg2);
+    }
+
+    public static void regUnicodeProp() {
+        var str = "WINGSプロジェクトは2003年に発足した執筆者コミュニティです。";
+        var ptn = Pattern.compile("\\p{IsKatakana}+");
+        var match = ptn.matcher(str);
+        while (match.find()) {
+            System.out.println(match.group(0));
+        }
+    }
+
+    public static void regReplaceAll() {
+        var str = "サポートサイトはhttps://www.wings.msn.to/です。";
+        System.out.println(str.replaceAll("(?i)http(s)?://([\\w-]+\\.)+[\\w-]+(/[\\w ./?%&=-]*)?",
+                "<a href=\"$0\">$0</a>"));
+    }
+
+    public static void regReplace() {
+        var str = "名前は桜。桜と呼ばれます。";
+        System.out.println(str.replace("桜", "サクラ"));
+    }
+
+    public static void regReplaceNamed() {
+        var str = "仕事用はwings@example.comです。";
+        System.out.println(str.replaceAll(
+                "(?i)(?<localName>[a-z0-9.!#$%&'*+/=?^_{|}~-]+)@(?<domain>[a-z0-9-]+(?:\\.[a-z0-9-]+)*)",
+                "${domain}の${localName}"));
+    }
+
+    public static void regSplit() {
+        var str = "にわに3わうらにわに51わにわとりがいる";
+        var re = Pattern.compile("\\d{1,}わ");
+        var result = re.split(str);
+        System.out.println(String.join(" ", result));
     }
 }

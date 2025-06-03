@@ -1,16 +1,6 @@
 {
     "java.project.sourcePaths": ["src"],
     "java.project.outputPath": "bin",
-    "java.project.referencedLibraries": ["lib/**/*.jar"]
-
-    // "java.configuration.runtimes": [
-    //     {
-    //         "name": "JavaSE-21",
-    //         "path": "C:/Program Files/Eclipse Adoptium/jdk-21.0.7.6-hotspot",
-    //         "default": true
-    //     }
-    // ],
-    // "java.project.source.version": "21",
-    // "java.project.target.version": "21",
-    // "java.project.previewFeatures": ["String Templates"] // もしくは "enabled"
+    "java.project.referencedLibraries": ["lib/**/*.jar"],
+    "java.compiler.additionalArgs": ["--enable-preview"]
 }
