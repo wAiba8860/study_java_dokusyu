@@ -2,6 +2,7 @@ package to.msn.wings.studyjava.chap05;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -13,8 +14,11 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
+import java.text.Normalizer;
 import java.text.NumberFormat;
+import java.text.Normalizer.Form;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -23,12 +27,12 @@ import java.util.Random;
 
 public class Chapter5_5 {
     public static void main(String[] args) {
-        arraysExample();
+        folderProcess();
     }
 
     public static void streamWrite() {
-        try (var writer = Files.newBufferedWriter(Paths.get("C:\\開発用\\Java\\data\\data.log"), StandardCharsets.UTF_8,
-                StandardOpenOption.APPEND)) {
+        try (var writer = Files.newBufferedWriter(Paths.get("C:\\開発用\\Java\\data\\data.log"),
+                StandardCharsets.UTF_8, StandardOpenOption.APPEND)) {
             writer.write(LocalDateTime.now().toString());
             writer.newLine();
             // writer.write(LocalDateTime.now().toString() + "\r\n");
@@ -39,15 +43,10 @@ public class Chapter5_5 {
 
     public static void fileWrite() {
         var filePath = "C:\\開発用\\Java\\data\\list.txt";
-        List<String> lines = List.of(
-                "春はあけぼの。やうやう白くなり行く、山ぎはすこし…",
-                "夏は夜。月のころはさらなり。やみもなほ、ほたるの…",
-                "秋は夕暮れ。夕日のさして山の端いと近うなりたるに…",
-                "冬はつとめて。雪の降りたるは、いふべきにもあらず…");
+        List<String> lines = List.of("春はあけぼの。やうやう白くなり行く、山ぎはすこし…", "夏は夜。月のころはさらなり。やみもなほ、ほたるの…",
+                "秋は夕暮れ。夕日のさして山の端いと近うなりたるに…", "冬はつとめて。雪の降りたるは、いふべきにもあらず…");
         try {
-            Files.write(Paths.get(filePath),
-                    lines,
-                    StandardCharsets.UTF_8);
+            Files.write(Paths.get(filePath), lines, StandardCharsets.UTF_8);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -65,8 +64,10 @@ public class Chapter5_5 {
     }
 
     public static void binaryReadWrite() {
-        try (var in = new BufferedInputStream(new FileInputStream("C:\\開発用\\Java\\data\\input.png"));
-                var out = new BufferedOutputStream(new FileOutputStream("C:\\開発用\\Java\\data\\output.png"));) {
+        try (var in =
+                new BufferedInputStream(new FileInputStream("C:\\開発用\\Java\\data\\input.png"));
+                var out = new BufferedOutputStream(
+                        new FileOutputStream("C:\\開発用\\Java\\data\\output.png"));) {
             var data = -1;
             while ((data = in.read()) != -1) {
                 out.write((byte) data);
@@ -98,7 +99,8 @@ public class Chapter5_5 {
         final var file = "C:\\開発用\\Java\\data\\article.ser";
 
         try (var out = new ObjectOutputStream(new FileOutputStream(file))) {
-            out.writeObject(new Article("最新Javaアップデート情報", "https://codezine.jp/article/corner/839", false));
+            out.writeObject(
+                    new Article("最新Javaアップデート情報", "https://codezine.jp/article/corner/839", false));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -190,16 +192,12 @@ public class Chapter5_5 {
     }
 
     public static void arraysExample() {
-        var array1 = new String[] {
-                "dog", "cat", "mouse", "fox", "lion"
-        };
+        var array1 = new String[] {"dog", "cat", "mouse", "fox", "lion"};
         Arrays.sort(array1);
         System.out.println(Arrays.toString(array1));
         System.out.println(Arrays.binarySearch(array1, "mouse"));
 
-        var array2 = new String[] {
-                "あ", "い", "う", "え", "お"
-        };
+        var array2 = new String[] {"あ", "い", "う", "え", "お"};
         var array3 = Arrays.copyOf(array2, 2);
         System.out.println(Arrays.toString(array3));
 
@@ -208,5 +206,122 @@ public class Chapter5_5 {
 
         Arrays.fill(array4, 4, 6, "--");
         System.out.println(Arrays.toString(array4));
+    }
+
+    public static void arrayShallow() {
+        var list1 = new StringBuilder[] {new StringBuilder("ドレミファソ"), new StringBuilder("CDEFG"),
+                new StringBuilder("ハニホヘト")};
+
+        var list2 = Arrays.copyOf(list1, list1.length);
+
+        list1[2].append("イロハ");
+        System.out.println(Arrays.toString(list1));
+        System.out.println(Arrays.toString(list2));
+    }
+
+    public static void arrayDeep() {
+        var list1 = new StringBuilder[] {new StringBuilder("ドレミファソ"), new StringBuilder("CDEFG"),
+                new StringBuilder("ハニホヘト")};
+
+        var list2 = new StringBuilder[list1.length];
+        for (var i = 0; i < list1.length; i++) {
+            list2[i] = new StringBuilder(list1[i].toString());
+        }
+
+        list1[2].append("イロハ");
+        System.out.println(Arrays.toString(list1));
+        System.out.println(Arrays.toString(list2));
+    }
+
+    public static void normalizeBasic() {
+        var types = new Form[] {Form.NFD, Form.NFC, Form.NFKD, Form.NFKC};
+        var chs = new String[] {"ギガ", "ｷﾞｶﾞ", "キ゛カ゛", "㌐"};
+
+        try (var writer = Files.newBufferedWriter(Paths.get("D:\\Java\\data\\data.txt"),
+                StandardOpenOption.CREATE)) {
+            for (var type : types) {
+                writer.write("■ " + type + "\n");
+                for (var ch : chs) {
+                    writer.write(ch + " => " + Normalizer.normalize(ch, type));
+                    writer.newLine();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void fileProcess() {
+        try {
+            var path1 = Paths.get("D:/Java/data/sample.txt");
+
+            // ファイルは存在するか
+            System.out.println(Files.exists(path1));
+
+            // ファイルは読み取り可能か
+            System.out.println(Files.isReadable(path1));
+
+            // ファイルは書き込み可能か
+            System.out.println(Files.isWritable(path1));
+
+            // ファイルは実行可能か
+            System.out.println(Files.isExecutable(path1));
+
+            // ファイルのサイズを取得
+            System.out.println(Files.size(path1));
+
+            // ファイルをコピー（存在する場合は置換）
+            var path2 = Files.copy(path1, Paths.get("D:/Java/data/copy.txt"),
+                    StandardCopyOption.REPLACE_EXISTING);
+
+            // ファイルを移動（存在する場合は置換）
+            Files.move(path2, Paths.get("D:/Java/data/sub/copy.txt"),
+                    StandardCopyOption.REPLACE_EXISTING);
+
+            // ファイル名を変更（存在する場合は置換）
+            var path3 = Files.move(path1, Paths.get("D:/Java/data/sub/rename.txt"),
+                    StandardCopyOption.REPLACE_EXISTING);
+
+            // Files.delete(path3);
+
+            // ファイルが存在する場合にだけ削除
+            // Files.deleteIfExists(path3);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void folderProcess() {
+
+        var dir1 = Paths.get("D:/Java/data/selfJava");
+        var dir2 = Paths.get("C:/Windows");
+
+        try (var s = Files.list(dir2)) {
+            // フォルダーを作成
+            Files.createDirectories(dir1);
+
+            // フォルダーが存在するか
+            System.out.println(Files.exists(dir1));
+
+            // フォルダーか
+            System.out.println(Files.isDirectory(dir1));
+
+            s.filter(v -> v.getFileName().toString().endsWith(".log")).forEach(System.out::println);
+
+            var dir3 = Files.copy(dir1, Paths.get("D:/Java/data/selfJava/test"),
+                    StandardCopyOption.REPLACE_EXISTING);
+
+            Files.move(dir3, Paths.get("D:/Java/data/selfJava/sub"),
+                    StandardCopyOption.REPLACE_EXISTING);
+
+            // Files.delete(Paths.get("D:/data/selfJava/sub"));
+
+            // Files.deleteIfExists(Paths.get("D:/Java/data/selfJava/sub"));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
