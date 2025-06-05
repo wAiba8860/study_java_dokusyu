@@ -1,5 +1,6 @@
 package to.msn.wings.studyjava.chap05;
 
+import java.text.DateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,11 +17,14 @@ import java.time.chrono.JapaneseEra;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.time.temporal.ChronoField;
+import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class Chapter5_4 {
     public static void main(String[] args) {
-        timeBetween();
+        timeToInstant();
     }
 
     public static void timeNow() {
@@ -88,7 +92,7 @@ public class Chapter5_4 {
 
     public static void timeGet2() {
         var dt = LocalDateTime.of(2024, 1, 10, 10, 20, 30, 123);
-        var week = new String[] {"", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日", "日曜日"};
+        var week = new String[] { "", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日", "日曜日" };
 
         System.out.println(dt.get(ChronoField.YEAR) + "年" + dt.get(ChronoField.MONTH_OF_YEAR) + "月"
                 + dt.get(ChronoField.DAY_OF_MONTH) + "日" + week[dt.get(ChronoField.DAY_OF_WEEK)]
@@ -147,5 +151,78 @@ public class Chapter5_4 {
         var nowDuration = Duration.between(dt2, LocalDateTime.now());
         System.out.println("時間の差:" + duration.toHours() + "時間");
         System.out.println("現在までの時間の差" + nowDuration.toHours() + "時間");
+    }
+
+    public static void timePlus() {
+        var d = LocalDate.of(2024, 1, 10);
+        System.out.println(d);
+        System.out.println(d.plus(3, ChronoUnit.YEARS));
+        System.out.println(d.plus(21, ChronoUnit.DAYS));
+        System.out.println(d.plus(22, ChronoUnit.DAYS));
+        System.out.println(d.plusYears(10));
+    }
+
+    public static void timePlus2() {
+        var d = LocalDateTime.of(2024, 1, 10, 10, 20, 30);
+        var period = Period.ofYears(3);
+        var duration = Duration.parse("P21DT1H1M1S");
+
+        System.out.println(d);
+        System.out.println(d.plus(period));
+        System.out.println(d.minus(duration));
+        System.out.println(d.minus(Duration.parse("P456DT2H2M2S")));
+    }
+
+    public static void calUse() {
+        var cal1 = Calendar.getInstance();
+        var cal2 = Calendar.getInstance();
+
+        cal1.set(2024, 0, 10, 10, 20, 30);
+        cal2.set(2024, 0, 10, 10, 20, 30);
+
+        System.out.println(cal1.get(Calendar.YEAR) + "年" +
+                (cal1.get(Calendar.MONTH) + 1) + "月" +
+                cal1.get(Calendar.DATE) + "日");
+
+        cal1.add(Calendar.YEAR, 1);
+
+        System.out.println(cal1.getTime());
+
+        var diff = (int) (cal1.getTimeInMillis() - cal2.getTimeInMillis()) / (1000 * 60 * 60 * 24);
+        System.out.println(diff + "日差");
+
+        System.out.println(cal1.equals(cal2));
+        System.out.println(cal1.before(cal2));
+        System.out.println(cal1.after(cal2));
+
+        var fdatetime = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL);
+        System.out.println(fdatetime.format(cal2.getTime()));
+        // エラー ParseException
+        // DateFormat.getInstance().parse() を使用すると、実行環境のデフォルトロケールに依存する
+        // System.out.println(DateFormat.getInstance().parse("2024/1/10 10:20:30"));
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy/M/d H:m:s");
+        System.out.println(LocalDateTime.parse("2024/1/10 10:20:30", format));
+    }
+
+    public static void timeFromCalendar() {
+        var cal = Calendar.getInstance();
+        var dt1 = LocalDateTime.ofInstant(cal.toInstant(), ZoneId.systemDefault());
+        var dt2 = OffsetDateTime.ofInstant(cal.toInstant(), ZoneId.systemDefault());
+        var dt3 = ZonedDateTime.ofInstant(cal.toInstant(), ZoneId.systemDefault());
+        var dt4 = ZonedDateTime.ofInstant(cal.toInstant(), ZoneId.of("America/Chicago"));
+
+        System.out.println(dt1);
+        System.out.println(dt2);
+        System.out.println(dt3);
+        System.out.println(dt4);
+    }
+
+    public static void timeToInstant() {
+        var dt = LocalDateTime.of(2024, 1, 10, 10, 20, 30);
+        var d = Date.from(dt.toInstant(ZoneOffset.of("+09:00")));
+        var cal = Calendar.getInstance();
+        cal.setTime(d);
+
+        System.out.println(cal);
     }
 }
