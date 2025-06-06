@@ -31,7 +31,7 @@ import java.util.Random;
 
 public class Chapter5_5 {
     public static void main(String[] args) {
-        httpBasic();
+        httpPost();
     }
 
     public static void streamWrite() {
@@ -338,12 +338,37 @@ public class Chapter5_5 {
             var req = HttpRequest.newBuilder().uri(URI.create("https://codezine.jp")).build();
 
             // レスポンスを取得
+            // var res = client.send(req, HttpResponse.BodyHandlers.ofString());
+
+            // 取得したコンテンツを出力
+            // System.out.println(res.body());
+            // System.out.println(res.headers());
+
+            // 非同期
+            client.sendAsync(req, HttpResponse.BodyHandlers.ofString()).thenAccept(response -> {
+                System.out.println(response.body());
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void httpPost() {
+        try {
+
+            var client = HttpClient.newHttpClient();
+            var req = HttpRequest.newBuilder().uri(URI.create("http://localhost/selfphp/JavaSample/post.php"))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString("{\"name\": \"佐々木新之助\"}")).build();
+
             var res = client.send(req, HttpResponse.BodyHandlers.ofString());
 
             // 取得したコンテンツを出力
             System.out.println(res.body());
         } catch (Exception e) {
             // TODO: handle exception
+            e.printStackTrace();
         }
     }
+
 }
