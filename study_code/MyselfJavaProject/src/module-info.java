@@ -1,3 +1,3 @@
-module MyselfJavaProject{
-    
+module MyselfJavaProject {
+    requires java.net.http;
 }

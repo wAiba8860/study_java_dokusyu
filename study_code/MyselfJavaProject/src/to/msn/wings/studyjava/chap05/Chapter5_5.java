@@ -10,6 +10,10 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -23,7 +27,7 @@ import java.util.Random;
 
 public class Chapter5_5 {
     public static void main(String[] args) {
-        arraysExample();
+        httpBasic();
     }
 
     public static void streamWrite() {
@@ -208,5 +212,24 @@ public class Chapter5_5 {
 
         Arrays.fill(array4, 4, 6, "--");
         System.out.println(Arrays.toString(array4));
+    }
+
+    public static void httpBasic() {
+        try {
+
+            // httpクライアントを生成
+            var client = HttpClient.newHttpClient();
+
+            // リクエストを準備
+            var req = HttpRequest.newBuilder().uri(URI.create("https://codezine.jp")).build();
+
+            // レスポンスを取得
+            var res = client.send(req, HttpResponse.BodyHandlers.ofString());
+
+            // 取得したコンテンツを出力
+            System.out.println(res.body());
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
     }
 }
