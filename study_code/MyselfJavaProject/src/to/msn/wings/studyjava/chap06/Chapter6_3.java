@@ -1,13 +1,15 @@
 package to.msn.wings.studyjava.chap06;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class Chapter6_3 {
 
     public static void main(String[] args) {
-        MapHashIdentity();
+        MapTreeSort();
     }
 
     public static void MapHash() {
@@ -44,6 +46,29 @@ public class Chapter6_3 {
                 put(key2, "Foo");
             }
         };
+        System.out.println(data);
+    }
+
+    public static void MapTree() {
+        var data = new TreeMap<String, String>(
+                Map.of("Rose", "バラ", "Sunflower", "ひまわり", "Morning Glory", "あさがお"));
+        for (var key : data.keySet()) {
+            System.out.println(key);
+        }
+    }
+
+    public static void MapTreeSort() {
+        // ソート順を指定したTreeMap
+        // var data = new TreeMap<String, String>((x, y) -> x.length() - y.length());
+        var data = new TreeMap<String, String>(new Comparator<String>() {
+            @Override
+            public int compare(String x, String y) {
+                return x.length() - y.length();
+            }
+        });
+        data.put("Rose", "バラ");
+        data.put("Sunflower", "ひまわり");
+        data.put("Morning Glory", "あさがお");
         System.out.println(data);
     }
 }
