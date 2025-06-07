@@ -1,15 +1,19 @@
 package to.msn.wings.studyjava.chap06;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 public class Chapter6_3 {
 
     public static void main(String[] args) {
-        MapTreeSort();
+        MapHashLinked();
     }
 
     public static void MapHash() {
@@ -69,6 +73,56 @@ public class Chapter6_3 {
         data.put("Rose", "バラ");
         data.put("Sunflower", "ひまわり");
         data.put("Morning Glory", "あさがお");
+        System.out.println(data);
+    }
+
+    public static void SortList() {
+        var data = new String[] {"バラ", "ひまわり", "チューリップ", "さくら"};
+        Arrays.sort(data, (x, y) -> x.length() - y.length());
+        System.out.println(Arrays.toString(data));
+
+        var list = new ArrayList<String>(List.of("バラ", "ひまわり", "チューリップ", "さくら"));
+        list.sort((x, y) -> x.length() - y.length());
+        System.out.println(list);
+    }
+
+    public static void MapNavigable() {
+        var data = new TreeMap<String, String>() {
+            {
+                put("peak", "高くなる");
+                put("peach", "もも");
+                put("peace", "1切れ");
+                put("piece", "平和");
+            }
+        };
+
+        var key = "pear";
+
+        if (data.containsKey(key)) {
+            System.out.println(key + "は" + data.get(key) + "です。");
+        } else {
+            System.out.print("検索中の単語は");
+            System.out.print(data.lowerKey(key) + "または");
+            System.out.print(data.higherKey(key));
+            System.out.println("ですか？");
+        }
+    }
+
+    public static void MapHashLinked() {
+
+        var data = new LinkedHashMap<String, String>(10, 0.7f, true) {
+            {
+                put("aaa", "あいうえお");
+                put("bbb", "かきくけこ");
+                put("ccc", "さしすせそ");
+                put("ddd", "たちつてと");
+            }
+        };
+        System.out.println(data.get("ccc"));
+        System.out.println(data.get("aaa"));
+        System.out.println(data.get("bbb"));
+        System.out.println(data.get("ddd"));
+
         System.out.println(data);
     }
 }
