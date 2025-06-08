@@ -1,5 +1,6 @@
 package to.msn.wings.studyjava.chap06;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -13,7 +14,7 @@ import java.util.TreeMap;
 public class Chapter6_3 {
 
     public static void main(String[] args) {
-        MapHashLinked();
+        DequeArray();
     }
 
     public static void MapHash() {
@@ -124,5 +125,25 @@ public class Chapter6_3 {
         System.out.println(data.get("ddd"));
 
         System.out.println(data);
+    }
+
+    public static void DequeArray() {
+        var data = new ArrayDeque<Integer>();
+        data.addLast(10);
+        data.addLast(15);
+        data.addLast(30);
+
+        System.out.println(data);
+        System.out.println(data.removeLast());
+        System.out.println(data);
+
+        var data2 = new ArrayDeque<Integer>();
+        data2.addLast(10);
+        data2.addLast(15);
+        data2.addLast(30);
+
+        System.out.println(data2);
+        System.out.println(data2.removeFirst());
+        System.out.println(data2);
     }
 }
