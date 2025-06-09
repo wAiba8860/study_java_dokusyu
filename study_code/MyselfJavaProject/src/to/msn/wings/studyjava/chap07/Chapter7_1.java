@@ -3,13 +3,15 @@ package to.msn.wings.studyjava.chap07;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
 
 public class Chapter7_1 {
 
     public static void main(String[] args) {
-        argsOverloadClient();
+        optionalExample();
     }
 
     public static void fieldBasic() {
@@ -40,7 +42,8 @@ public class Chapter7_1 {
 
     public static void overloadAntiClient() {
         var c = new OverloadAnti();
-        var list = new CharSequence[] { "春はあけぼの", new StringBuilder("夏は夜"), new StringBuffer("秋は夕暮れ") };
+        var list =
+                new CharSequence[] {"春はあけぼの", new StringBuilder("夏は夜"), new StringBuffer("秋は夕暮れ")};
 
         for (var cs : list) {
             c.show(cs);
@@ -139,5 +142,58 @@ public class Chapter7_1 {
     public static void argsOverloadClient() {
         var arg = new ArgsOverload();
         arg.hoge(10, 13);
+    }
+
+    public static void paramPrimitiveBasic() {
+        var num = 2;
+        var p = new ParamPrimitive();
+        System.out.println(p.update(num));
+        System.out.println(num);
+
+        var data = new int[] {2, 4, 6};
+        var p2 = new ParamRef();
+        var p3 = new ParamRefArray();
+        System.out.println(p2.update(data)[0]);
+        System.out.println(data[0]);
+        System.out.println(p3.update(data)[0]);
+        System.out.println(data[0]);
+    }
+
+    public static void nullCheckBasic() {
+        var b = new BookMap(Map.of("978-4-7981-5757-3", "JavaScript逆引きレシピ", "978-4-7981-5202-8",
+                "Androidアプリ開発の教科書", "978-4-7981-5382-7", "独習C# 新版"));
+
+        var title = b.getTitleByIsbn("978-4-7981-5757-3");
+        var optTitle = b.getTitleByIsbn("978-4-7981-5757-3");
+        var titleOpt = optTitle.orElse("✕");
+        System.out.println(titleOpt.trim());
+        // if (title == null) {
+        // System.out.println("書籍は存在しません。");
+        // } else {
+        // System.out.println(title.trim());
+        // }
+    }
+
+    public static void optionalExample() {
+        // Optionalオブジェクトを生成
+        var opt1 = Optional.of("サンプル1");
+        var opt2 = Optional.ofNullable(null);
+        var opt3 = Optional.empty();
+
+        // 値が存在するか
+        System.out.println(opt1.isPresent());
+
+        // 値が存在する場合は、ラムダ式を実行
+        opt1.ifPresent(value -> {
+            System.out.println(value);
+        });
+
+        // opt2の値が存在する場合はそれを、nullの場合は引数値を表示
+        System.out.println(opt2.orElse("null値です"));
+
+        // opt3がnull値の場合はラムダ式を実行
+        System.out.println(opt3.orElseGet(() -> {
+            return "null値です";
+        }));
     }
 }
