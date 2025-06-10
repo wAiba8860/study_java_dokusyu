@@ -5,7 +5,7 @@ import java.util.Date;
 public class Chapter8_1 {
 
     public static void main(String[] args) {
-        typeGetBasic();
+        polymorphismBasic();
     }
 
     public static void accessorBasic() {
@@ -69,12 +69,11 @@ public class Chapter8_1 {
         Person p = new BusinessPerson();
 
         // 型に応じてメッセージを表示
-        System.out.println(
-                switch (p) {
-                    case BusinessPerson bp -> "BusinessPerson";
-                    // case Student st -> "Student";
-                    case Person pp -> "Person";
-                });
+        System.out.println(switch (p) {
+            case BusinessPerson bp -> "BusinessPerson";
+            // case Student st -> "Student";
+            case Person pp -> "Person";
+        });
     }
 
     public static void castUp() {
@@ -123,5 +122,12 @@ public class Chapter8_1 {
         System.out.println(p2.getClass());
         var c = Person.class;
         System.out.println(c);
+    }
+
+    public static void polymorphismBasic() {
+        Shape tri = new Triangle(10, 50);
+        Shape rec = new Rectangle(10, 50);
+        System.out.println(tri.getArea());
+        System.out.println(rec.getArea());
     }
 }

@@ -5,14 +5,16 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
+import to.msn.wings.studyjava.chap08.Roulette;
 import static java.lang.Math.*;
 
 public class Chapter7_1 {
 
     public static void main(String[] args) {
-        optionalExample();
+        rouletteException();
     }
 
     public static void fieldBasic() {
@@ -43,7 +45,8 @@ public class Chapter7_1 {
 
     public static void overloadAntiClient() {
         var c = new OverloadAnti();
-        var list = new CharSequence[] { "春はあけぼの", new StringBuilder("夏は夜"), new StringBuffer("秋は夕暮れ") };
+        var list =
+                new CharSequence[] {"春はあけぼの", new StringBuilder("夏は夜"), new StringBuffer("秋は夕暮れ")};
 
         for (var cs : list) {
             c.show(cs);
@@ -150,7 +153,7 @@ public class Chapter7_1 {
         System.out.println(p.update(num));
         System.out.println(num);
 
-        var data = new int[] { 2, 4, 6 };
+        var data = new int[] {2, 4, 6};
         var p2 = new ParamRef();
         var p3 = new ParamRefArray();
         System.out.println(p2.update(data)[0]);
@@ -199,5 +202,10 @@ public class Chapter7_1 {
 
     public static void importStatic() {
         System.out.println(abs(-10));
+    }
+
+    public static void rouletteException() {
+        Random rou = new Roulette(10);
+        System.out.println(rou.nextInt());
     }
 }
