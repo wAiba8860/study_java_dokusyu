@@ -1,8 +1,10 @@
 package to.msn.wings.studyjava.chap09;
 
+import java.util.Arrays;
+
 public class Chapter9_1 {
     public static void main(String[] args) {
-        equalsBasic();
+        compareBasic();
     }
 
     public static void toStringBasic() {
@@ -20,6 +22,15 @@ public class Chapter9_1 {
         System.out.println(bp1.equals(p));
         System.out.println(p.equals(bp2));
         System.out.println(bp2.equals(bp1));
+    }
+
+    public static void compareBasic() {
+        var data = new PersonCompare[] {new PersonCompare("タロウ", "マツダ"),
+                new PersonCompare("リコ", "モリヤマ"), new PersonCompare("コウスケ", "モリタ"),
+                new PersonCompare("マリコ", "モリヤ"), new PersonCompare("ソウジ", "ムラカミ"),
+                new PersonCompare("エミ", "ヤマダ")};
+        Arrays.sort(data);
+        System.out.println(Arrays.toString(data));
     }
 
 }
