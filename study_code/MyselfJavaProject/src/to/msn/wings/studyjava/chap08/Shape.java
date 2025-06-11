@@ -1,6 +1,6 @@
 package to.msn.wings.studyjava.chap08;
 
-public class Shape {
+public abstract class Shape {
     protected double width;
     protected double height;
 
@@ -10,7 +10,9 @@ public class Shape {
     }
 
     // 図形の面積を取得（派生クラスでオーバーライドするので、中身はダミー）
-    public double getArea() {
-        return 0d;
-    }
+    // public double getArea() {
+    // return 0d;
+    // }
+
+    public abstract double getArea();
 }

@@ -131,3 +131,11 @@ public class Chapter8_1 {
         System.out.println(rec.getArea());
     }
 }
+
+interface InnerChapter8_1 {
+    public static final String TITLE = "独習JAVA";
+    double RATE = 1.08;
+
+    private static void log(String msg) {
+    };
+}
