@@ -11,7 +11,13 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+import to.msn.wings.studyjava.chap09.MyClass.MyHelper;
 
 import to.msn.wings.studyjava.chap09.EnumConstSeason.Season;
 
@@ -25,7 +31,7 @@ public class Chapter9_1 {
         // e.printStackTrace();
         // }
 
-        enumMethod();
+        lowerBoundedBasic();
 
     }
 
@@ -224,6 +230,73 @@ public class Chapter9_1 {
         var s = Season.valueOf("SPRING");
         System.out.println(s instanceof Season);
         System.out.println(s);
+    }
+
+    public static void recordBasic() {
+        var p1 = new PersonRecord("山田太郎", 38);
+        var p2 = new PersonRecord("山田太郎", 38);
+        System.out.println(p1.name());
+        System.out.println(p1);
+        System.out.println(p1.equals(p2));
+        System.out.println(p1 == p2);
+        var p3 = new PersonRecord();
+        System.out.println(p3);
+        Object p4 = new PersonRecord("山田太郎", 38);
+        if (p4 instanceof PersonRecord(var name, var age)) {
+            System.out.println("name: " + name + ", age: " + age);
+        }
+        // java22で_は正式リリースされたため
+        // previewをつけてもエラーになる
+        // if(p4 instanceof PersonRecord(var name, _)){
+        // System.out.println("name: " + name);
+        // }
+    }
+
+    public static void nestBasic() {
+        var c = new MyClass();
+        c.run();
+
+        // private時 visibleエラー
+        var h = new MyClass.MyHelper();
+        var h2 = new MyHelper();
+    }
+
+    public static void nestedAccess() {
+        var c = new MyClassNotStatic();
+        c.run();
+        // var h = c.new MyHelperNotStatic();
+    }
+
+    public static void genericsMethodClient() {
+        System.out.println(Collections.singletonList("WINGS"));
+        var list = Collections.<String>emptyList();
+
+        // Type mismatch: cannot convert from ArrayList<String> to
+        // ArrayList<Object>Java(16777233)
+        // ArrayList<Object> data = new ArrayList<String>();
+    }
+
+    public static void genericBoundedBasic() {
+        var cli = new GenericBounded();
+        var data1 = List.of(new Parent(null));
+        var data2 = List.of(new Child(null));
+        cli.show(data1);
+        cli.show(data2);
+    }
+
+    // 下限境界ワイルドカード
+    public static <T> boolean addAll(Collection<? super T> c, T... elements) {
+        boolean result = false;
+        for (T element : elements) {
+            result |= c.add(element);
+        }
+        return result;
+    }
+
+    public static void lowerBoundedBasic() {
+        var list = new ArrayList<Object>();
+        Collections.addAll(list, "バラ", "ひまわり", "あさがお");
+        System.out.println(list);
     }
 
 }
