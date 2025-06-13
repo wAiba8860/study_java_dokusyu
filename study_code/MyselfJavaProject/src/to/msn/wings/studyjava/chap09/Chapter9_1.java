@@ -12,8 +12,9 @@ import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
-
-import to.msn.wings.studyjava.chap09.EnumConstSeason.Season;
+import java.util.EnumSet;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 public class Chapter9_1 {
     public static void main(String[] args) {
@@ -25,7 +26,7 @@ public class Chapter9_1 {
         // e.printStackTrace();
         // }
 
-        enumMethod();
+        enumBit();
 
     }
 
@@ -47,16 +48,16 @@ public class Chapter9_1 {
     }
 
     public static void compareBasic() {
-        var data = new PersonCompare[] { new PersonCompare("タロウ", "マツダ"),
+        var data = new PersonCompare[] {new PersonCompare("タロウ", "マツダ"),
                 new PersonCompare("リコ", "モリヤマ"), new PersonCompare("コウスケ", "モリタ"),
                 new PersonCompare("マリコ", "モリヤ"), new PersonCompare("ソウジ", "ムラカミ"),
-                new PersonCompare("エミ", "ヤマダ") };
+                new PersonCompare("エミ", "ヤマダ")};
         Arrays.sort(data);
         System.out.println(Arrays.toString(data));
     }
 
     public static void cloneBasic() {
-        var p1 = new PersonClone("太郎", "山田", new String[] { "あいう", "えお" });
+        var p1 = new PersonClone("太郎", "山田", new String[] {"あいう", "えお"});
         var p2 = p1.clone();
         System.out.println(p1 == p2);
         System.out.println(p2);
@@ -79,7 +80,7 @@ public class Chapter9_1 {
     }
 
     public static void tryBad() {
-        var data = new String[] { "Java", "C#", "Python" };
+        var data = new String[] {"Java", "C#", "Python"};
         try {
             var i = 0;
             // 無限ループ（指定のインデックスが範囲外になったところで例外＝終了）
@@ -207,8 +208,8 @@ public class Chapter9_1 {
     }
 
     public static void enumConstClient() {
-        var ecs = new EnumConstSeason();
-        ecs.processSeason(EnumConstSeason.Season.AUTUMN);
+        // var ecs = new EnumConstSeason();
+        // ecs.processSeason(EnumConstSeason.Season.AUTUMN);
 
         // 列挙型で想定しないint型を許容しないコード
         // この行はコンパイルエラーになります（int型をSeason型に変換できないため）。
@@ -224,6 +225,32 @@ public class Chapter9_1 {
         var s = Season.valueOf("SPRING");
         System.out.println(s instanceof Season);
         System.out.println(s);
+    }
+
+    public static void enumBasic() {
+        System.out.println(Season.SPRING);
+        System.out.println(Season.SPRING.toString());
+        System.out.println(Season.SPRING.toSeasonValue());
+
+        for (var se : Season.values()) {
+            se.show();
+        }
+    }
+
+    public static void enumBit() {
+        var ptn = Pattern.compile("^[a-z0-9._-]*", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
+
+        var flags = Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.COMMENTS;
+        if ((flags & Pattern.COMMENTS) != 0) {
+            System.out.println("COMMENTSは有効です");
+        }
+
+        if ((flags & (Pattern.CASE_INSENSITIVE | Pattern.MULTILINE)) == (Pattern.CASE_INSENSITIVE
+                | Pattern.MULTILINE)) {
+            System.out.println("含まれています");
+        }
+
+        // Pattern.compile("^[a-z0-9._-]*",EnumSet.of(PatternFlag.CASE_INSENSITIVE,PatternFlag.MULTILINE));
     }
 
 }
