@@ -7,11 +7,14 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
+import mylib.lib.MainLib;
+import mylib.internal.SubLib;
+
 public class Chapter11_2 {
     private Integer value;
 
     public static void main(String[] args) {
-        reflectField();
+        moduleClient2();
     }
 
     public static void personOverride() {
@@ -20,11 +23,9 @@ public class Chapter11_2 {
     }
 
     /**
-     * @deprecated
-     *             It is rarely appropriate to use this constructor. The static
-     *             factory
-     *             {@link #valueOf(int)} is generally a better choice, as it is
-     *             likely to yield significantly better space and time performance.
+     * @deprecated It is rarely appropriate to use this constructor. The static factory
+     *             {@link #valueOf(int)} is generally a better choice, as it is likely to yield
+     *             significantly better space and time performance.
      */
     @Deprecated(since = "9")
     public Chapter11_2(int value) {
@@ -32,7 +33,7 @@ public class Chapter11_2 {
     }
 
     public static void annotationSuppress() {
-        @SuppressWarnings({ "unused", "deprecation", "cast", "all" })
+        @SuppressWarnings({"unused", "deprecation", "cast", "all"})
         // 未使用警告が表示されなくなる
         var i = 0;
     }
@@ -113,5 +114,19 @@ public class Chapter11_2 {
             e.printStackTrace();
         }
 
+    }
+
+    public static void moduleClient() {
+        var main = new MainLib();
+        main.run();
+    }
+
+    public static void moduleClient2() {
+        var clazz = MainLib.class;
+        var con = clazz.getConstructor();
+        var m = con.newInstance();
+        var name = clazz.getDeclaredField("name");
+        name.setAccessible(true);
+        System.out.println(name.get(m));
     }
 }

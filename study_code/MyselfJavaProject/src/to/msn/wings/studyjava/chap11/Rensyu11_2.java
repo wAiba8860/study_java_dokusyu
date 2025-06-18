@@ -1,8 +1,5 @@
 package to.msn.wings.studyjava.chap11;
 
-import mylib.lib.MainLib;
-import mylib.internal.Sublib;
-
 public class Rensyu11_2 {
     public static void main(String[] args) {
         System.out.println("[1]:");
@@ -30,10 +27,5 @@ public class Rensyu11_2 {
             e.printStackTrace();
         }
 
-    }
-
-    public static void moduleClient() {
-        var main = new MainLib();
-        main.run();
     }
 }
