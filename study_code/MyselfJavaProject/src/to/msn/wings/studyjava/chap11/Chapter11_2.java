@@ -10,6 +10,8 @@ import java.util.List;
 import mylib.lib.MainLib;
 import mylib.internal.SubLib;
 
+//import com.google.gson.Gson;
+
 public class Chapter11_2 {
     private Integer value;
 
@@ -23,8 +25,10 @@ public class Chapter11_2 {
     }
 
     /**
-     * @deprecated It is rarely appropriate to use this constructor. The static factory
-     *             {@link #valueOf(int)} is generally a better choice, as it is likely to yield
+     * @deprecated It is rarely appropriate to use this constructor. The static
+     *             factory
+     *             {@link #valueOf(int)} is generally a better choice, as it is
+     *             likely to yield
      *             significantly better space and time performance.
      */
     @Deprecated(since = "9")
@@ -33,7 +37,7 @@ public class Chapter11_2 {
     }
 
     public static void annotationSuppress() {
-        @SuppressWarnings({"unused", "deprecation", "cast", "all"})
+        @SuppressWarnings({ "unused", "deprecation", "cast", "all" })
         // 未使用警告が表示されなくなる
         var i = 0;
     }
@@ -117,16 +121,28 @@ public class Chapter11_2 {
     }
 
     public static void moduleClient() {
-        var main = new MainLib();
+        var main = new MainLib("abc", 34);
         main.run();
     }
 
     public static void moduleClient2() {
-        var clazz = MainLib.class;
-        var con = clazz.getConstructor();
-        var m = con.newInstance();
-        var name = clazz.getDeclaredField("name");
-        name.setAccessible(true);
-        System.out.println(name.get(m));
+        try {
+            var clazz = MainLib.class;
+            var con = clazz.getConstructor();
+            var m = con.newInstance();
+            var name = clazz.getDeclaredField("name");
+            name.setAccessible(true);
+            System.out.println(name.get(m));
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+    }
+
+    public static void noModuleLib() {
+        // var g = new Gson();
+        var a = new Article("最新Javaアップデート解説", "https://codezine.jp/article/corner/839");
+
+        // オブジェクトの内容をJson化した結果を出力
+        System.out.println();
     }
 }
